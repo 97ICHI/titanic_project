@@ -1,0 +1,7 @@
+{
+  "best_model": "catboost",
+  "best_primary_metric": 0.7913151456103493,
+  "primary_metric": "f1",
+  "n_features": 17,
+  "seed": 42
+}

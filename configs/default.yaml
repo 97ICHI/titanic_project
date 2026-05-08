@@ -1,0 +1,105 @@
+project:
+  name: titanic_project
+  task: binary_classification
+
+seed: 42
+
+paths:
+  train_csv: data/raw/train.csv
+  test_csv: data/raw/test.csv
+  artifacts_dir: artifacts
+  results_csv: artifacts/model_results.csv
+  submission_csv: artifacts/submission.csv
+  summary_json: artifacts/run_summary.json
+  roc_png: artifacts/roc_curve.png
+  importance_png: artifacts/feature_importance.png
+  dl_curve_png: artifacts/dl_learning_curve.png
+
+data:
+  target_col: Survived
+  id_col: PassengerId
+
+features:
+  use_title: true
+  use_family_size: true
+  use_is_alone: true
+  fill_embarked_with: S
+  fill_cabin_with: missing
+  fill_fare_strategy: median
+  categorical_cols:
+    - Embarked
+    - Sex
+    - Initial
+  numeric_cols:
+    - Pclass
+    - Age
+    - SibSp
+    - Parch
+    - Fare
+    - FamilySize
+    - IsAlone
+  drop_cols:
+    - Name
+    - Ticket
+    - Cabin
+
+cv:
+  n_splits: 5
+  shuffle: true
+  random_state: 42
+  primary_metric: f1
+  scoring:
+    accuracy: accuracy
+    f1: f1
+    roc_auc: roc_auc
+
+models:
+  baseline_logreg:
+    enabled: true
+    params:
+      max_iter: 3000
+      C: 1.0
+      solver: liblinear
+
+  xgboost:
+    enabled: true
+    params:
+      n_estimators: 200
+      learning_rate: 0.05
+      max_depth: 3
+      subsample: 0.9
+      colsample_bytree: 0.9
+      eval_metric: logloss
+      random_state: 42
+
+  lightgbm:
+    enabled: true
+    params:
+      n_estimators: 200
+      learning_rate: 0.05
+      num_leaves: 15
+      max_depth: 3
+      min_child_samples: 10
+      random_state: 42
+      verbosity: -1
+
+  catboost:
+    enabled: true
+    params:
+      iterations: 300
+      learning_rate: 0.05
+      depth: 4
+      random_state: 42
+      verbose: 0
+      allow_writing_files: false
+
+  dl_mlp:
+    enabled: true
+    params:
+      hidden_dims: [64, 32]
+      dropout: 0.1
+      batch_size: 64
+      epochs: 100
+      patience: 10
+      lr: 0.001
+      weight_decay: 0.0001
