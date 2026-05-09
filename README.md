@@ -1,11 +1,5 @@
 # Titanic Project
 
-## Что это
-Репозиторий с воспроизводимым решением задачи Titanic:
-- baseline: Logistic Regression
-- boosting: XGBoost, LightGBM, CatBoost
-- DL: PyTorch MLP
-
 ## Структура
 - `configs/default.yaml` — все настройки запуска
 - `main.py` — единая точка входа
